@@ -9,8 +9,8 @@ class Graph:
     def setup_graph(tx, supplier1_name, supplier2_name):
 
         query = (
-            "CREATE (s1:Person { name: $supplier1_name }) "
-            "CREATE (s2:Person { name: $supplier2_name }) "
+            "CREATE (s1:Supplier { name: $supplier1_name }) "
+            "CREATE (s2:Supplier { name: $supplier2_name }) "
             "CREATE (s1)-[:KNOWS]->(s2) "
             "RETURN s1, s2"
         )
