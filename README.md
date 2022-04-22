@@ -8,7 +8,7 @@ Supply chains consist of resources, suppliers, customers, logistic companies and
 ## TODOs
 
 - [ ] Add functionality to load showcase data from xml files to Neo4j
-- [ ]
+- [ ] Add more showcase data files
 - [ ] Add functionality to use shortest path algorithm
 - [ ] Add spanning tree algorithm
 - [ ] Identify fitting approach for visualization
