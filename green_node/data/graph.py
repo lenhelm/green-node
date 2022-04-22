@@ -1,26 +1,39 @@
+import xml.etree.ElementTree as ET
+
 from neo4j import GraphDatabase
 from neo4j.exceptions import ServiceUnavailable
+
+
+
+from copy import copy
+
+def dictify(r,root=True):
+    if root:
+        return {r.tag : dictify(r, False)}
+    d=copy(r.attrib)
+    if r.text:
+        d["_text"]=r.text
+    for x in r.findall("./*"):
+        if x.tag not in d:
+            d[x.tag]=[]
+        d[x.tag].append(dictify(x,False))
+    return d
 
 class Graph:
 
     def __init__(self, uri: str, user: str, pw: str):
         self.driver = GraphDatabase.driver(uri, auth=(user, pw))
+    
+    def close(self):
+        self.driver.close()
 
-    def setup_graph(tx, supplier1_name, supplier2_name):
+    def setup_graph(self, path: str):
 
-        query = (
-            "CREATE (s1:Supplier { name: $supplier1_name }) "
-            "CREATE (s2:Supplier { name: $supplier2_name }) "
-            "CREATE (s1)-[:KNOWS]->(s2) "
-            "RETURN s1, s2"
-        )
-        result = tx.run(query, supplier1_name=supplier1_name, supplier2_name=supplier2_name)
-        try:
-            return [{"s1": record["s1"]["name"], "s2": record["s2"]["name"]}
-                    for record in result]
-        # Capture any errors along with the query and data for traceability
-        except ServiceUnavailable as exception:
-            logging.error("{query} raised an error: \n {exception}".format(
-                query=query, exception=exception))
-            raise
+        with open(path, 'r') as file:
+            data = file.read()
+        
+        xml_dict = dictify(data)
+
+        return data
+
 
