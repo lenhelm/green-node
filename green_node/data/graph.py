@@ -1,39 +1,33 @@
-import xml.etree.ElementTree as ET
-
-from neo4j import GraphDatabase
-from neo4j.exceptions import ServiceUnavailable
-
-
-
 from copy import copy
 
-def dictify(r,root=True):
+from neo4j import GraphDatabase
+
+
+def dictify(r, root=True):
     if root:
-        return {r.tag : dictify(r, False)}
-    d=copy(r.attrib)
+        return {r.tag: dictify(r, False)}
+    d = copy(r.attrib)
     if r.text:
-        d["_text"]=r.text
+        d["_text"] = r.text
     for x in r.findall("./*"):
         if x.tag not in d:
-            d[x.tag]=[]
-        d[x.tag].append(dictify(x,False))
+            d[x.tag] = []
+        d[x.tag].append(dictify(x, False))
     return d
 
-class Graph:
 
+class Graph:
     def __init__(self, uri: str, user: str, pw: str):
         self.driver = GraphDatabase.driver(uri, auth=(user, pw))
-    
+
     def close(self):
         self.driver.close()
 
     def setup_graph(self, path: str):
 
-        with open(path, 'r') as file:
+        with open(path, "r") as file:
             data = file.read()
-        
+
         xml_dict = dictify(data)
 
-        return data
-
-
+        return xml_dict

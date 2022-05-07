@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
-from green_node.data.parser import xml_to_dict
 from green_node.data.io import get_example
+from green_node.data.parser import xml_to_dict
 
 
 def test_xml_to_dict():
