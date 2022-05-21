@@ -6,4 +6,4 @@ def get_root() -> Path:
 
 
 def get_example(xml: str) -> Path:
-    return Path(get_root() / "green_node/example" / xml)
+    return Path(get_root() / "green_node/data/example" / xml)
