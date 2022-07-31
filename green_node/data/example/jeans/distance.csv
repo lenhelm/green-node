@@ -1,0 +1,4 @@
+id;source_id;dest_id;by;distance;kg_co2/kg_freigh
+1;2;3;land;3411;0.18
+2;2;3;air;1942;0.82
+3;2;3;train;4422;0.03
